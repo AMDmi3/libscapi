@@ -43,24 +43,9 @@ directories: $(OUT_DIR)
 $(OUT_DIR):
 	mkdir -p $(OUT_DIR)
 
-$(SLib): $(OBJ_FILES)
-	ar ru $@ $^ 
-	ranlib $@
+$(SLib):
+    @cmake . -DMAKELIBS=False
 
-obj/circuits/%.o: src/circuits/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $< 	 
-obj/circuits_c/%.o: src/circuits_c/%.c
-	gcc -fPIC -mavx -maes -mpclmul -DRDTSC -DTEST=AES128  -O3 -c -o $@ $< 
-obj/comm/%.o: src/comm/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $< 	 
-obj/infra/%.o: src/infra/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $< 	 
-obj/interactive_mid_protocols/%.o: src/interactive_mid_protocols/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $< 	 
-obj/primitives/%.o: src/primitives/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $< 	 
-obj/mid_layer/%.o: src/mid_layer/%.cpp
-	g++ -c $(CPP_OPTIONS) -o $@ $<
 
 tests: compile-tests
 	cd ./test; ./tests.exe
